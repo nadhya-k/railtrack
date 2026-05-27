@@ -1,0 +1,27 @@
+# Layer - Infrastructure / Configuration 
+
+# Database connection settings per environment.
+#
+# SECURITY: Never hardcode passwords here. Values come from environment variables - set via .env locally, AWS SSM Parameter Store in production.
+#
+# YAML anchors (&default) and merge keys (<<: *default) let us define shared settings once and inherit them in each environment block, following DRY (Don't Repeat Yourself) principles.
+
+
+default: &default
+  adapter:  postgresql
+  encoding: unicode
+  pool:     5
+  timeout:  5000
+
+development:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] || 'postgresql://localhost/railtrack_development' %>
+
+test:
+  <<: *default
+  url: <%= ENV['TEST_DATABASE_URL'] || 'postgresql://localhost/railtrack_test' %>
+
+production:
+  <<: *default
+  url: <%= ENV.fetch('DATABASE_URL') { raise 'DATABASE_URL env var is not set!' } %>
+  pool: <%= ENV.fetch('DB_POOL', 10) %>

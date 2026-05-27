@@ -1,0 +1,41 @@
+# Layer - Infrastructure / Local Development Environment
+
+
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER:     railtrack
+      POSTGRES_PASSWORD: railtrack_dev
+      POSTGRES_DB:       railtrack_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U railtrack"]
+      interval: 5s
+      timeout:  5s
+      retries:  5
+
+  app:
+    build: .
+    command: >
+      sh -c "bundle exec rake db:migrate &&
+             bundle exec rake db:seed &&
+             bundle exec puma -p 9292"
+    environment:
+      RACK_ENV:     development
+      DATABASE_URL: postgresql://railtrack:railtrack_dev@db:5432/railtrack_development
+    ports:
+      - "9292:9292"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
