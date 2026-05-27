@@ -10,6 +10,8 @@ The Railtrack API has been built using Ruby, Sinatra, and PostgreSQL.
 
 # ----- Section 2 - API Structure -----
 
+```
+
 railtrack/
 |
 |── app/
@@ -71,6 +73,8 @@ railtrack/
 |__ Dockerfile
 |
 |__ docker-compose.yml
+
+```
 
 # ----- Section 3 - Getting Started -----
 
