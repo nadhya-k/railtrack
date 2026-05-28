@@ -5,7 +5,7 @@
 
 
 source 'https://rubygems.org'
-ruby '3.2.0'
+ruby '4.0.5'
 
 # ----- Web Framework Libraries -----
 
@@ -31,7 +31,7 @@ gem 'dotenv', '~> 3.1'
 
 # ----- Test Group -----
 
-group: test do 
+group :test do 
     gem 'rspec', '~> 3.13'
     gem 'rack-test', '~> 2.1'
     gem 'database_cleaner-active_record', '~> 2.1'
@@ -41,7 +41,7 @@ group: test do
     gem 'timecop', '~> 0.9'
 end
 
-group: development, :test do
+group :development, :test do
     gem 'rubocop', '~> 1.64', require: false
     gem 'rubocop-rspec', '~> 3.0', require: false
     gem 'rubocop-performance', '~> 1.21', require: false
